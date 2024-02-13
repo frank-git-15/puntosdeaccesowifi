@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'DataPipeline.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'puntos_de_acceso_wifi',
+        'USER': 'admin',
+        'PASSWORD': 'P2m1sq1p455.65',
+        'HOST': 'zonaswifi-db.cz88ywcga3y7.us-east-1.rds.amazonaws.com',
+        'PORT': 3306
+
     }
 }
 
