@@ -7,21 +7,12 @@ from math import radians, sin, cos, sqrt, atan2
 
 #Se importta el modulos Paginator que no ayuda a paginar los resultados
 from django.core.paginator import Paginator
-from django.db.models import F, FloatField, ExpressionWrapper, Func
-
-from django.db import models
 
 
-
-#from django.contrib.gis.db.models.functions import Distance
-
-
-from django.db.models import Func, F, FloatField
+from django.db.models import FloatField
 from django.db.models.expressions import RawSQL
 
-class Haversine(Func):
-    function = 'HAVING'
-    output_field = FloatField()
+
 
 #Aqui se define que datos del modelo se pueden consultar
 class PuntoDeAccesoWifiType(DjangoObjectType):
@@ -38,7 +29,6 @@ class Query(graphene.ObjectType):
     puntosDeAccesoWifi = graphene.List(PuntoDeAccesoWifiType,page=graphene.Int(),page_size=graphene.Int())
     puntoDeAcceso = graphene.Field(PuntoDeAccesoWifiType,id= graphene.String(required=True))
     puntosdeAccesoPorColonia = graphene.List(PuntoDeAccesoWifiType,colonia= graphene.String(required=True),page=graphene.Int(),page_size=graphene.Int())
-    # puntosDeAccesoMasCercanos = graphene.List(PuntoDeAccesoWifiType,latitud = graphene.Float(required=True),longitud = graphene.Float(required=True),page=graphene.Int(),page_size=graphene.Int())
     puntosDeAccesoMasCercanos = graphene.List(PuntoDeAccesoWifiType,latitud = graphene.Float(required=True),longitud = graphene.Float(required=True),page=graphene.Int(),page_size=graphene.Int())
     def resolve_puntosDeAccesoWifi(self,info,page,page_size):
         #Aqui se realiza la consulta a base de datos para eso usamos el modelo PuntoDeAccesoWifi 
@@ -99,7 +89,8 @@ class Query(graphene.ObjectType):
         try:
             print("Obteniendo puntos..")
 
-            #Aqui se 
+            #Aqui se consultan los puntos wifi con una consulta sql, se le agrego una columna virtual llamada distancia
+            #La cual es el resultado de aplicar la formula harversine simplificada y despues se ordena por esa columna
             puntoDeAccesoWifi = PuntoDeAccesoWifi.objects.annotate(
                 distancia=RawSQL(
                     """

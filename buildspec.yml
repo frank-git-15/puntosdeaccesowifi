@@ -1,0 +1,18 @@
+version: 0.2
+
+env:
+  variables:
+    IMAGE_NAME: "puntosDeAccesoDockerIMG"
+
+phases:
+  build:
+    commands:
+      - echo "Building Docker image..."
+      - docker build -t $IMAGE_NAME .
+      - echo "Tagging Docker image with source version..."
+      - docker tag $IMAGE_NAME $ECR_REPO_URL/$IMAGE_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo "Pushing Docker image to Amazon ECR..."
+      - docker push $ECR_REPO_URL/$IMAGE_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+
+
+      
