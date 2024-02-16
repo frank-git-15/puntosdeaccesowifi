@@ -7,12 +7,17 @@ env:
 phases:
   build:
     commands:
+      - echo "Login to ECR..."
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - echo "Logged in to ECR..."
       - echo "Building Docker image..."
       - docker build -t $IMAGE_NAME .
       - echo "Tagging Docker image with source version..."
       - docker tag $IMAGE_NAME $ECR_REPO_URL/$IMAGE_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - echo "Pushing Docker image to Amazon ECR..."
-      - docker push $ECR_REPO_URL/$IMAGE_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR_REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - ECHO "Docker image pushed"
+      
+
 
 
       
