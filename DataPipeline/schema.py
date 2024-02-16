@@ -24,6 +24,8 @@ class PuntoDeAccesoWifiType(DjangoObjectType):
 #cuando se consulte la api en hello retornara la palabra hello
 #Cuando se consulte puntosDeAccesoWifi retornara todos lo puntos de acceso
 #cuando se consulte puntoDeAcceso se le debera proporcionar el id y que campos quiere retornar
+#cuando se consulte puntosdeAccesoPorColonia se debe espeficiar el nombre de la colonia y la pagina y tamaño de cada pagina y regresara un lista de puntos en esa colonia
+#Cuando se consulte puntosDeAccesoMasCercanos regresara ua lista de puntos cercanos a unas coordenadas dadas, igual se le especifica la pagina y la cantidad de paginas por pagina
 class Query(graphene.ObjectType):
     hello = graphene.String(default_value = "Hello")
     puntosDeAccesoWifi = graphene.List(PuntoDeAccesoWifiType,page=graphene.Int(),page_size=graphene.Int())
@@ -72,8 +74,6 @@ class Query(graphene.ObjectType):
         except PuntoDeAccesoWifi.DoesNotExist:
             return []
         
-
-
     """
     Para el calculo de la distancia se uso la formula harversine
     R = 6371 Radio de la tierra en kilomentros
