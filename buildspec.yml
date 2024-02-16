@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    IMAGE_NAME: "puntosDeAccesodockerimg"
+    IMAGE_NAME: "puntosdeaccesodockerimg"
 
 phases:
   build:
